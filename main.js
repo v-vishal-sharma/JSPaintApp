@@ -10,16 +10,16 @@ window.onload = function() {
         delX,
         delY,
         rW=0, 
-        o_rW=0, 
+        // o_rW=0, 
         rH=0,
-        o_rH=0,
+        // o_rH=0,
         startX,
         startY,
 
         // Object Variables
         // mouseMove = false,
         mouseDown = false,
-        dragOk = false,
+        dragging = false,
         // borderColor = 'black',
         // borderWidth = 2,
         colorPicker = 0,
@@ -37,71 +37,6 @@ window.onload = function() {
 
 
     // Event Functions
-    function CursorMove() {
-        // context.clearRect(0,0,canvas.width,canvas.height);
-        onmousemove = function(e){
-            e.preventDefault();
-            e.stopPropagation();
-
-            if(!mouseDown){
-                return; 
-            }
-
-            delX = (e.clientX);
-            delY = (e.clientY);
-
-            // if(dragOk){
-                // console.log(
-                //     "Cursor Move Co-ord:", 
-                //     delX, 
-                //     delY,
-                // );
-
-                rW = delX - dX;
-                rH = delY - dY;
-                // if(rW < o_rW && rH < o_rH){
-                //     context.clearRect(0,0,canvas.width,canvas.height);
-                //     context.closePath(); 
-                // }
-                o_rW = rW;
-                o_rH = rH;
-                
-                // if(rH < o_rH){
-                //     context.clearRect(0,0,canvas.width,canvas.height);    
-                //     context.closePath();
-                // }
-                var dx=dX-startX;
-                var dy=dY-startY;
-
-                if(dragOk){
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    console.log("starting to drag")
-                    for(var i=0;i<objects.length;i++){
-                        var o=objects[i];
-                        if(o.isDrag){
-                          o.x += dX;
-                          o.y += dY;
-                        }
-                      }
-                }
-                else {
-                    // console.log("funny", dX, dY);
-                    context.beginPath();
-                    context.rect(dX, dY, rW, rH);
-                    context.fillStyle = fillColor[colorPicker];
-                    pickedColor = fillColor[colorPicker];
-                    context.fill();
-                    context.stroke();
-                    context.closePath();
-                }
-                startX=dX;
-                startY=dY;
-        }
-            
-    }
-
     function CursorDown() {
         onmousedown = function(e){
             console.log("Cursor Down");
@@ -116,14 +51,16 @@ window.onload = function() {
             //     dX, 
             //     dY,
             // );
-            dragOk=false;
+            // console.log(dX, dY);
+
+            dragging=false;
             for(var i=0;i<objects.length;i++){
                 var o=objects[i];
                 // decide if the shape is a rect or circle               
-                if(dX>o.dX && dX<o.dX + o.rW && dY>o.dY && dY<o.dY + o.rH){
+                if(dX>o.x && dX<o.x + o.width && dY>o.y && dY<o.y + o.height){
                     // if yes, set that rects isDragging=true
                     console.log("cursor inside object");
-                    dragOk=true;
+                    dragging=true;
                     o.isDrag=true;
                 }
                 else {
@@ -132,6 +69,7 @@ window.onload = function() {
 
                 }
             }
+
             // save the current mouse position
             startX=dX;
             startY=dY;
@@ -141,16 +79,87 @@ window.onload = function() {
     function CursorUp() {
         onmouseup = function(e){
             mouseDown = false;
+            // console.log(dX, e.clientX);
             objects.push({x:dX, y:dY, width:rW, height:rH, fill:pickedColor, isDrag:false});
+
             console.log("Objects:", objects);
-            dragOk = false;
+            dragging = false;
             for(var i=0;i<objects.length;i++){
-              objects[i].isDrag=false;
+                objects[i].isDrag=false;
             }
             // console.clear();     
         }
 
     }
+    function CursorMove() {
+        // context.clearRect(0,0,canvas.width,canvas.height);
+        onmousemove = function(e){
+            e.preventDefault();
+            e.stopPropagation();
+
+            if(!mouseDown){
+                return; 
+            }
+
+            delX = (e.clientX);
+            delY = (e.clientY);
+
+            // if(dragging){
+                // console.log(
+                //     "Cursor Move Co-ord:", 
+                //     delX, 
+                //     delY,
+                // );
+
+                rW = delX - dX;
+                rH = delY - dY;
+                // if(rW < o_rW && rH < o_rH){
+                //     context.clearRect(0,0,canvas.width,canvas.height);
+                //     context.closePath(); 
+                // }
+                // old width and height
+                o_rW = rW;
+                o_rH = rH;
+                
+                // if(rH < o_rH){
+                //     context.clearRect(0,0,canvas.width,canvas.height);    
+                //     context.closePath();
+                // }
+                var dx=dX-startX;
+                var dy=dY-startY;
+
+                if(dragging){
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    console.log("starting to drag")
+                    for(var i=0;i<objects.length;i++){
+                        var o = objects[i];
+                        if(o.isDrag){
+                          o.x = e.clientX;
+                          o.y = e.clientY;
+                        }
+                      }
+                }
+                else {
+                    // console.log("funny", dX, dY);
+                    context.beginPath();
+                    context.rect(dX, dY, rW, rH);
+                    context.fillStyle = fillColor[colorPicker];
+                    pickedColor = fillColor[colorPicker];
+                    context.fill();
+                    context.stroke();
+                    context.closePath();
+                    
+                }
+
+                startX=dX;
+                startY=dY;
+        }
+            
+    }
+
+    
 
     // var cursorActive = new cursorActive(0,0),
     //     cord = new cord(0,0);
