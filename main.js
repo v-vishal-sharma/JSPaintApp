@@ -9,6 +9,7 @@ window.onload = function() {
         dY = 0,
         delX,
         delY,
+        temp,
         rW=0, 
         // o_rW=0, 
         rH=0,
@@ -56,12 +57,13 @@ window.onload = function() {
             dragging=false;
             for(var i=0;i<objects.length;i++){
                 var o=objects[i];
-                // decide if the shape is a rect or circle               
+               
                 if(dX>o.x && dX<o.x + o.width && dY>o.y && dY<o.y + o.height){
-                    // if yes, set that rects isDragging=true
+      
                     console.log("cursor inside object");
                     dragging=true;
                     o.isDrag=true;
+
                 }
                 else {
                     var dx=o.x-dX;
@@ -69,6 +71,9 @@ window.onload = function() {
 
                 }
             }
+
+
+
 
             // save the current mouse position
             startX=dX;
@@ -164,6 +169,25 @@ window.onload = function() {
     // var cursorActive = new cursorActive(0,0),
     //     cord = new cord(0,0);
 
+    // Double click to delete
+                                
+    function deleteObject(){
+        console.log("deleting object");
+        dX = (e.clientX);
+        dY = (e.clientY);
+
+        for(var i=0;i<objects.length;i++){
+            var o=objects[i];
+        
+                if(dX>o.x && dX<o.x + o.width && dY>o.y && dY<o.y + o.height){
+
+                    console.log("cursor inside object");
+                    dragging=true;
+                    o.isDrag=true;
+
+                }
+        o.pop;
+    }
 
     // Clear Screen Function  
     document.getElementById("clear-screen").addEventListener("click", clearScreen);
@@ -179,6 +203,8 @@ window.onload = function() {
     canvas.addEventListener("mousemove", CursorMove());
     canvas.addEventListener("mousedown", CursorDown());
     canvas.addEventListener("mouseup", CursorUp());
+    canvas.addEventListener("dblclick", deleteObject());
+
     // update();
 
     // function update() {
