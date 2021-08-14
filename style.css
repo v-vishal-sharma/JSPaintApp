@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgb(78, 78, 78);
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.canvas-host {
+    display: flex;
+    justify-content: center;
+}
+canvas {
+    cursor: crosshair;
+    /* margin-top: 15em; */
+    display: block;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+    position: absolute;
+    background-color: #ffffff;
+    width: 100vw;
+    height: 100vh;
+    /* animation : slide-in .7s ease-in-out; */
+    padding: 1px;
+    animation: squeeze-in-h .8s ease-in-out;
+}
+
+.title {
+    position: relative;
+    margin: 1em 0;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.title > p {
+    font-size: 75px;
+    letter-spacing: 0px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 900;
+    animation: squeeze-in-w 1s ease-in-out;
+}
+
+.menu {
+    position: absolute;
+    bottom: 1em;
+    right: 15em;
+    transition: all .1s ease-in-out;
+
+}
+
+.clear-screen {
+    position: relative;
+    border:none;
+    border-radius: 5px;
+    background-color: rgba(93, 250, 177, 0.5);
+    /* box-shadow: 10px 0 0px rgba(0, 0, 0, 0.7); */
+    color: rgb(206, 255, 248);
+    font-size: 20px;
+    padding: .5em;
+    font-family: 'Poppins', sans-serif; 
+    animation: button-swipein 0.7 ease-in-out;
+    transition: all .1s ease-in-out;
+}
+
+.menu:hover {
+    /* color: rgb(0, 0, 0); */
+    background-color: rgba(43, 109, 116, 0.835);
+    scale: 1.1;
+    /* font-size:20px; */
+}
+
+.menu:active {
+    background-color: rgba(16, 73, 46, 0.835);
+    scale: 0.9;
+    
+}
+/* Animation Sequences */
+
+@keyframes squeeze-in-w {
+    from {
+        letter-spacing: 45px;
+        color: rgba(0, 0, 0, 0.7);
+    }
+    to {
+        letter-spacing: 0px;
+        color: rgb(255, 255, 255);
+    }
+}
+
+@keyframes squeeze-in-h {
+    to {
+        height: 75vh;
+    }
+    from {
+        height: 0px
+    }
+}
+
+@keyframes button-swipein {
+    to{
+        opacity: 1;
+        width:100px;
+    }
+    from{
+        opacity: 0;
+        width: 0px;
+        font-size: 100px;
+    }
+}
+
+
